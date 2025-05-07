@@ -1,7 +1,7 @@
 /**
  * Mafalda's Emote Wall for Twitch.tv
  * Web: https://github.com/LordPrevious/EmoteWall
- * @license MIT
+ * @license ISC
  */
 import { TwitchIrcClient } from "./chat/TwitchIrcClient";
 
