@@ -1,0 +1,26 @@
+{
+  "name": "emote_wall",
+  "version": "1.0.0",
+  "description": "",
+  "main": "www/emotewall.js",
+  "scripts": {
+    "start": "concurrently --kill-others --raw \"npm:build-watch\" \"npm:live-server\"",
+    "live-server": "live-server --host=localhost --port=8080 --no-browser ./www",
+    "compile-watch": "tsc -w",
+    "build": "node esbuild.mjs --prod",
+    "build-watch": "node esbuild.mjs --watch",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.25.3",
+    "jest": "^29.7.0",
+    "live-server": "^1.2.2",
+    "ts-jest": "^29.3.2",
+    "typescript": "^5.8.3"
+  }
+}
