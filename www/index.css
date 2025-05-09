@@ -1,0 +1,90 @@
+html {
+	background-color: #e4cef7;
+	font-family: sans-serif;
+	font-size: 18px;
+}
+body {
+	margin: 0;
+	padding: 0 20px;
+}
+
+.card {
+	max-width: 600px;
+	margin: 20px auto;
+	padding: 20px;
+	border-radius: 20px;
+}
+.card > :first-child {
+	margin-top: 0;
+}
+.card > :last-child {
+	margin-bottom: 0;
+}
+.head {
+	padding: 20px;
+	color: #FFFFFF;
+	font-size: xx-large;
+	background-color: #805ec1;
+	text-align: center;
+}
+.panel {
+	background-color: White;
+}
+.panel hr {
+	border-color: #f4edf7;
+}
+
+form {
+	width: 100%;
+}
+label {
+	font-weight: bold;
+	color: #6d29c1;
+}
+input {
+	width: 100%;
+	padding: 5px 10px 2px;
+	margin: 5px 0;
+	font-family: monospace;
+	font-size: larger;
+	line-height: 30px;
+	background-color: #f4edf7;
+	box-sizing: border-box;
+	border: none;
+	border-bottom: 3px solid #f4edf7;
+	border-radius: 5px 5px 0 0;
+	outline: none;
+}
+::placeholder {
+	color: #8069a4;
+}
+input:active, input:focus {
+	border-color: #6d29c1;
+}
+input:invalid {
+	border-color: #f1d1d7;
+	background-color: #f1d1d7;
+}
+input:invalid::placeholder {
+	color: #c0787d;
+}
+input:invalid:active, input:invalid:focus {
+	border-color: #E2072E;
+}
+input[type=number] {
+	text-align: end;
+}
+input[type=button], input[type=submit] {
+	font-family: sans-serif;
+	font-weight: bold;
+	border: none;
+	border-radius: 500px;
+	color: White;
+	background-color: #6d29c1;
+}
+input[type=button]:hover, input[type=submit]:hover {
+	background-color: #7b41d8;
+}
+input[type=button]:active, input[type=submit]:active {
+	background-color: #9655eb;
+}

@@ -19,6 +19,17 @@ function getFloat(name: string, defaultValue: number, min?: number, max?: number
 	return clamp(assured, min, max);
 }
 
+function getPercentage(name: string, defaultValue: number): number {
+	const raw = params.get(name);
+	if ((raw === null) || raw.includes(".")) {
+		// assume ratio
+		return getFloat(name, defaultValue, 0, 1);
+	} else {
+		// assume percentage
+		return getInt(name, defaultValue * 100, 0, 100) / 100;
+	}
+}
+
 function getString(name: string, defaultValue: string): string {
 	return params.get(name) ?? defaultValue;
 }
@@ -32,17 +43,17 @@ export const config = {
 	 * Base emote size. Individual animations may increase or decrease it by a factor.
 	 * Parameter and value in pixels.
 	 */
-	emoteBaseSize: getFloat("emoteSize", 150, 1),
+	emoteBaseSize: getInt("emoteSize", 150, 1),
 	/**
 	 * Plus-minus range around base size to generate some deviation.
-	 * Parameter and value in pixels.
+	 * Parameter in percentage and value as ratio.
 	 */
-	emoteSizeDeviation: getFloat("emoteSizeDev", 25, 0),
+	emoteSizeVariation: getInt("emoteSizeVariation", 20, 0, 100) / 100,
 	/**
 	 * Chance for emotes from the same message to be passed to the same animation.
-	 * Parameter and value as ratio.
+	 * Parameter in percentage and value as ratio.
 	 */
-	groupChance: getFloat("groupChance", .05, 0, 1),
+	groupChance: getPercentage("groupChance", .05),
 	/**
 	 * Number of emotes to place in a train.
 	 * Emotes randomly get queued up for the train, which starts once this amount has been reached.
@@ -50,18 +61,18 @@ export const config = {
 	trainLength: getInt("trainLength", 10, 1),
 	/**
 	 * Chance for an emote to be queued up for the next train.
-	 * Parameter and value as ratio.
+	 * Parameter in percentage and value as ratio.
 	 */
-	trainChance: getFloat("trainChance", .25, 0, 1),
+	trainChance: getPercentage("trainChance", .25),
 	/**
 	 * Possible delay between cart arrival and train start. Thank you for travelling with Deutsche Bahn!
 	 * Parameter in seconds, value in milliseconds.
 	 */
-	trainDelay: getFloat("trainDelay", 30, 0) * 1000,
+	trainDelay: getInt("trainDelay", 30, 0) * 1000,
 	/**
 	 * Trains should go at least this many loops (from one side to the other).
 	 */
-	minTrainLoops: getFloat("minLoops", 3, 1),
+	minTrainLoops: getInt("minLoops", 3, 1),
 	/**
 	 * IRC Websocket URL for the Twitch chat.
 	 */

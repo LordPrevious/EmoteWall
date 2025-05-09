@@ -6,6 +6,8 @@ Simply point a browser source in your streaming program, such as [OBS](https://o
 
 Skip building it yourself by heading over to the [release collections](https://github.com/LordPrevious/EmoteWall/releases).
 
+![Emote Wall in OBS](./doc/obs.png)
+
 ## Parameters
 
 The Emote Wall can be configured using `GET` parameters in the URL.
@@ -13,7 +15,7 @@ The Emote Wall can be configured using `GET` parameters in the URL.
 | Parameter | Explanation |
 | --- | --- |
 | `channel` | **Required.** Name of the Twitch channel for which to display emotes. |
-| `emoteSize` | Value in pixels from which emote sizes are derived. Allows adjusting to individual view sizes. |
+| `emoteSize` | Value from which emote sizes are derived. Allows adjusting to individual view sizes. |
 
 For a comprehensive list, see [`src/config.ts`](./src/config.ts).
 

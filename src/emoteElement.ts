@@ -19,7 +19,7 @@ export function setEmoteSize(element: HTMLElement, size: number) {
 
 export function randomizeSize(scale: number = 1): number {
 	const baseSize = config.emoteBaseSize;
-	const deviation = config.emoteSizeDeviation;
+	const deviation = baseSize * config.emoteSizeVariation;
 	return (baseSize + (randomSign() * randomTo(deviation))) * scale;
 }
 

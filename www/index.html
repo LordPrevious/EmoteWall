@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Mafalda's Emote Wall Configurator</title>
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<script type="text/javascript">
+			function sweepFormData(event) {
+				// Remove empty entries from form data before submitting
+				for (const [key, value] of Array.from(event.formData.entries())) {
+					if (value === "") {
+						event.formData.delete(key);
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="card head">
+			Mafalda's Emote Wall for Twitch.tv
+		</div>
+		<form class="card panel" id="configuratorForm" method="GET" action="emotewall.html" onformdata="javascript:sweepFormData(event);">
+			<p>
+				<label for="channel">Twitch channel name</label>
+				<input id="channel" name="channel" class="input_fill" required="true" type="text" minlength="4" maxlength="25" pattern="[a-zA-Z0-9]*[a-zA-Z0-9_]?" placeholder="diebeleuchtetenbrueder"/>
+				Name of the Twitch channel for which to display emotes.
+			</p>
+			<hr>
+			<p>
+				<label for="emoteSize">Emote size</label>
+				<input id="emoteSize" name="emoteSize" type="number" min="1" placeholder="150"/>
+				Does not apply to all animations. Some animations are smaller than others by nature.
+			</p>
+			<p>
+				<label for="emoteSizeVariation">Size variation %</label>
+				<input id="emoteSizeVariation" name="emoteSizeVariation" type="number" min="0" placeholder="20"/>
+				Variation around the base emote size.
+			</p>
+			<hr>
+			<p>
+				<label for="groupChance">Group chance %</label>
+				<input id="groupChance" name="groupChance" type="number" min="0" max="100" placeholder="5"/>
+				Chance for emotes of one message to be grouped in a single animation.
+			</p>
+			<hr>
+			<p>
+				<label for="trainChance">Train chance %</label>
+				<input id="trainChance" name="trainChance" type="number" min="0" max="100" placeholder="20"/>
+				Chance for an emote to be added to the next train.
+				Once enough emotes have been set aside for the next train, it will go <i>&ldquo;choo-choo!&rdquo;</i>
+				
+			</p>
+			<p>
+				<label for="trainLength">Train length</label>
+				<input id="trainLength" name="trainLength" type="number" min="1" placeholder="10"/>
+				Number of emotes in a train.
+			</p>
+			<p>
+				<label for="trainLoops">Train loops</label>
+				<input id="trainLoops" name="trainLoops" type="number" min="0" placeholder="3"/>
+				A train should move from one side to the other at least this many times.
+			</p>
+			<p>
+				<label for="trainDelay">Train delay</label>
+				<input id="trainDelay" name="trainDelay" type="number" min="0" placeholder="30"/>
+				A train might be delayed by this many seconds.
+			</p>
+			<hr>
+			<p>
+				Take the URL of the page this button sends you to and place it in your streaming tool's browser source.
+			</p>
+			<input type="submit" value="Get Emote Wall">
+		</form>
+	</body>
+</html>
