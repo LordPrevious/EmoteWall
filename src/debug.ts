@@ -15,6 +15,7 @@ import { randomTo } from "./util/random";
 
 const global = (globalThis as any);
 
+global.spawnBuster = spawnBuster;
 global.spawnFloat = spawnFloat;
 global.spawnGonne = spawnGonne;
 global.spawnMoon = spawnMoon;

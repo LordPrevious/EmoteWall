@@ -1,5 +1,6 @@
 import { config } from "../config";
 import { randomIn, randomTo } from "../util/random";
+import { spawnBuster } from "./buster";
 import { spawnFloat } from "./float";
 import { spawnGonne } from "./gonne";
 import { spawnMoon } from "./moon";
@@ -22,6 +23,7 @@ function registerSpawner(spawner: SpawnerFunction, times: number) {
 	}
 }
 
+registerSpawner(spawnBuster, 5);
 registerSpawner(spawnFloat, 15);
 registerSpawner(spawnGonne, 10);
 registerSpawner(spawnMoon, 5);
