@@ -4,6 +4,7 @@ import { spawnFloat } from "./float";
 import { spawnGonne } from "./gonne";
 import { spawnMoon } from "./moon";
 import { spawnPeek } from "./peek";
+import { spawnSpook } from "./spook";
 import { spawnSpring } from "./spring";
 import { spawnTrain } from "./train";
 import { spawnTumble } from "./tumble";
@@ -25,6 +26,7 @@ registerSpawner(spawnFloat, 15);
 registerSpawner(spawnGonne, 10);
 registerSpawner(spawnMoon, 5);
 registerSpawner(spawnPeek, 15);
+registerSpawner(spawnSpook, 10);
 registerSpawner(spawnSpring, 5);
 registerSpawner(spawnTumble, 15);
 
