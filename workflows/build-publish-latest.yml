@@ -1,0 +1,55 @@
+# A workflow to build, zip and publish the latest state of main.
+
+name: Latest
+
+on:
+  push:
+    branches:
+      - main
+      - ci-test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: emotewall_js
+          path: www/emotewall.js
+
+  bundle:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+      - uses: thedoctor0/zip-release@0.7.6
+        with:
+          directory: www
+          type: zip
+          filename: ../emotewall.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: emotewall_zip
+          path: emotewall.zip
+
+  publish:
+    needs: [build, bundle]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+      - uses: IsaacShelton/update-existing-release@v1.3.4
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          release: "latest"
+          tag: "latest"
+          replace: true
+          files: >
+            emotewall.zip
+            www/emotewall.js
