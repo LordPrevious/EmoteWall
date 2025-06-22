@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - ci-test
 
 jobs:
   build:
@@ -51,12 +52,12 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           merge-multiple: true
-      - uses: softprops/action-gh-release@v2
+      - uses: IsaacShelton/update-existing-release@v1.3.4
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          name: "latest"
-          tag_name: "latest"
-          make_latest: true
-          files: |
+          release: latest
+          tag: latest
+          replace: true
+          files: >
             emotewall.zip
             emotewall.js
