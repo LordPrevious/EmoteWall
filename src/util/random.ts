@@ -1,4 +1,4 @@
-export function randomBool(): Boolean {
+export function randomBool(): boolean {
 	return Math.random() < .5;
 }
 

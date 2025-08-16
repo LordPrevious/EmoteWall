@@ -12,8 +12,12 @@ import { spawnTumble } from "./tumble";
 
 export type SpawnerFunction = (emoteIds: string[]) => void;
 const emoteSpawners: Array<SpawnerFunction> = [];
+const namedSpawners = new Map<string, SpawnerFunction>();
 
 function registerSpawner(spawner: SpawnerFunction, times: number) {
+	if (spawner.name && (spawner.name !== "")) {
+		namedSpawners.set(spawner.name.toLowerCase(), spawner);
+	}
 	if (times == 1) {
 		emoteSpawners.push(spawner);
 	} else if (times > 1) {
@@ -22,15 +26,6 @@ function registerSpawner(spawner: SpawnerFunction, times: number) {
 		emoteSpawners.fill(spawner, oldLength);
 	}
 }
-
-registerSpawner(spawnBuster, 2);
-registerSpawner(spawnFloat, 15);
-registerSpawner(spawnGonne, 10);
-registerSpawner(spawnMoon, 3);
-registerSpawner(spawnPeek, 15);
-registerSpawner(spawnSpook, 3);
-registerSpawner(spawnSpring, 4);
-registerSpawner(spawnTumble, 15);
 
 function randomSpawner(): SpawnerFunction {
 	return emoteSpawners[Math.floor(randomTo(emoteSpawners.length))];
@@ -57,10 +52,43 @@ export function spawnRandom(emoteIds: string[]) {
 	trainCartLottery(emoteIds);
 }
 
+export function spawnNamed(name: string, emoteIds: string[]): boolean {
+	const spawner = namedSpawners.get(name.toLowerCase());
+	if (spawner) {
+		spawner(emoteIds);
+		return true;
+	}
+	return false;
+}
+
+registerSpawner(spawnBuster, 2);
+registerSpawner(spawnFloat, 15);
+registerSpawner(spawnGonne, 10);
+registerSpawner(spawnMoon, 3);
+registerSpawner(spawnPeek, 15);
+registerSpawner(spawnRandom, 0);
+registerSpawner(spawnRandomGrouped, 0);
+registerSpawner(spawnRandomSingle, 0);
+registerSpawner(spawnSpook, 3);
+registerSpawner(spawnSpring, 4);
+registerSpawner(spawnTrain, 0);
+registerSpawner(spawnTumble, 15);
+
 /**
  * Train carts in waiting for the next train, see trainCartLottery().
  */
 let trainCarts: string[] = [];
+
+export function scheduleTrain(delay: number = 0) {
+	setTimeout((carts: string[]) => {
+		spawnTrain(carts);
+	}, delay, trainCarts);
+	trainCarts = [];
+}
+
+export function appendTrain(...emoteIds: string[]) {
+	trainCarts.push(...emoteIds);
+}
 
 /*
  * Roll the wheel for a chance to add one of the the given emotes to the pending train card list!
@@ -68,12 +96,9 @@ let trainCarts: string[] = [];
  */
 export function trainCartLottery(emoteIds: string[]) {
 	if (Math.random() < config.trainChance) {
-		trainCarts.push(emoteIds[Math.floor(randomTo(emoteIds.length))]);
+		appendTrain(emoteIds[Math.floor(randomTo(emoteIds.length))]);
 		if (trainCarts.length >= config.trainLength) {
-			setTimeout((carts: string[]) => {
-				spawnTrain(carts);
-			}, randomIn(config.trainDelay / 5, config.trainDelay), trainCarts);
-			trainCarts = [];
+			scheduleTrain(randomIn(config.trainDelay / 5, config.trainDelay));
 		}
 	}
 }

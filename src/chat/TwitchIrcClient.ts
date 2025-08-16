@@ -1,8 +1,9 @@
-import { spawnRandom } from "../animation/spawners";
+import { appendTrain, scheduleTrain, spawnNamed, spawnRandom } from "../animation/spawners";
 import { config } from "../config";
 import { errorDisplay } from "../ui/ErrorDisplay";
 import { randomIn } from "../util/random";
 import { IrcMessage, parseIrcMessages } from "./IrcMessage";
+import { isSuperUser } from "./superuser";
 
 export class TwitchIrcClient {
 
@@ -64,6 +65,54 @@ export class TwitchIrcClient {
 		this.webSocket.send(`NICK justinfan${Math.floor(randomIn(5000, 80000))}`);
 	}
 
+	private handleSpecialCommands(message: IrcMessage): boolean {
+		var success = false;
+		if (isSuperUser(message.sender)) {
+			const content = message.parameters[message.parameters.length - 1].toLowerCase();
+			const command = content.split(" ").find(word => {
+				return word.startsWith(":") && word.endsWith(":");
+			});
+			if (command) {
+				const parts = command.split(":");
+				if (parts.length > 2) {
+					if (message.emotes.length > 0) {
+						const spawnerName = `spawn${parts[1] || "randomgrouped"}`;
+						const rawRepeats = parts[3] ? parseInt(parts[3], 10) : NaN;
+						const repeats = isNaN(rawRepeats) ? 1 : Math.max(rawRepeats, 1);
+						console.log("Special spawn:", spawnerName, repeats);
+						const emotes = [...message.emotes];
+						for (let i = 1; i < repeats; ++i) {
+							emotes.push(...message.emotes);
+						}
+						switch (parts[2]) {
+							case "t":
+								appendTrain(...emotes);
+								success = true;
+								break;
+							case "s":
+								emotes.forEach(emote => {
+									success = spawnNamed(spawnerName, [emote]) || success;
+								});
+								break;
+							case "g":
+							case "":
+								success = spawnNamed(spawnerName, emotes);
+								break;
+						}
+					} else {
+						switch (parts[1]) {
+							case "train":
+								console.log("Special train time!");
+								scheduleTrain();
+								break;
+						}
+					}
+				}
+			}
+		}
+		return success;
+	}
+
 	/**
 	 * Handle a received IRC message and act accordingly.
 	 * @param message A received message.
@@ -84,6 +133,12 @@ export class TwitchIrcClient {
 			case "PART":
 				console.log("Parted from channel.");
 				errorDisplay.show("Left channel.");
+				break;
+			case "PRIVMSG":
+				if (this.handleSpecialCommands(message)) {
+					// skip default handling
+					return;
+				}
 				break;
 		}
 		if (message.emotes.length > 0) {
