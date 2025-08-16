@@ -23,13 +23,13 @@ function registerSpawner(spawner: SpawnerFunction, times: number) {
 	}
 }
 
-registerSpawner(spawnBuster, 5);
+registerSpawner(spawnBuster, 2);
 registerSpawner(spawnFloat, 15);
 registerSpawner(spawnGonne, 10);
-registerSpawner(spawnMoon, 5);
+registerSpawner(spawnMoon, 3);
 registerSpawner(spawnPeek, 15);
-registerSpawner(spawnSpook, 10);
-registerSpawner(spawnSpring, 5);
+registerSpawner(spawnSpook, 3);
+registerSpawner(spawnSpring, 4);
 registerSpawner(spawnTumble, 15);
 
 function randomSpawner(): SpawnerFunction {
